@@ -1,16 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CMU Think | Noise reduction and neural activity reconstruction</title>
-<meta name="description" content="CMU Think cleans, localizes, and reconstructs neural activity across space and time. A scalable signal-processing architecture for brain-computer interface research (BCI).">
+<title>CMU Think | Reducción de ruido y reconstrucción de actividad neuronal</title>
+<meta name="description" content="CMU Think depura, localiza y reconstruye la actividad neuronal en espacio y tiempo. Una arquitectura escalable de procesamiento de señal para investigación en interfaces cerebro-computadora (BCI).">
 <link rel="icon" type="image/png" sizes="96x96" href="favicon%20(8)/favicon-96x96.png">
 <link rel="icon" type="image/svg+xml" href="favicon%20(8)/favicon.svg">
 <link rel="shortcut icon" href="favicon%20(8)/favicon.ico">
 <link rel="apple-touch-icon" sizes="180x180" href="favicon%20(8)/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-title" content="CMU Think">
 <link rel="manifest" href="favicon%20(8)/site.webmanifest">
+
+<!-- ====================================================================
+     NOTAS DE FIDELIDAD (revisar antes de publicar, luego borrar):
+     - CLAIMS CLINICOS / DIAGNOSTICOS FUERA. El whitepaper afirma
+       diagnostico, cirugia, rehabilitacion, neuropsiquiatria y
+       tratamiento. NO publicar sin validacion regulatoria (COFEPRIS /
+       FDA / CE) y decision de Erick. Aqui todo va como investigacion /
+       analisis, no como producto medico.
+     - Sin lenguaje de patentes. Solo secreto industrial / licenciamiento.
+     - Overclaims absolutistas suavizados (latencia cero, preservacion
+       absoluta, "curar la ceguera espacial", "pelicula real del cerebro").
+     - Bidireccionalidad descrita como capacidad de investigacion.
+     - Footer: reemplazar [RAZON SOCIAL] por entidad legal real.
+     - Formulario apunta a privacidad LFPDPPP (pendiente revision abogado).
+       Atencion: "metadatos biometricos" del WP -> tratar con cuidado en
+       el aviso de privacidad si llega a recabarse algun dato de ese tipo.
+     - Imagenes: placeholders locales, sin CDN externo. Conservar los
+       renders 3D neurales del sitio actual (autoalojados).
+     ==================================================================== -->
 
 <style>
   :root{
@@ -80,7 +99,7 @@
   .sec-title{font-size:clamp(28px,4vw,44px);margin-bottom:18px;max-width:780px}
   .sec-sub{color:var(--ink-soft);max-width:700px;font-size:17px;margin-bottom:46px}
 
-  /* PROBLEM */
+  /* PROBLEMA */
   .problem{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:stretch}
   .pcard{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:30px}
   .pcard h3{font-size:18px;margin-bottom:10px}
@@ -90,7 +109,7 @@
   .pcard.win p{color:var(--ink-soft)}
   .principle{margin-top:42px;border-left:3px solid var(--accent);padding:6px 0 6px 22px;font-size:clamp(20px,3vw,30px);font-weight:700;letter-spacing:-.02em;max-width:800px;line-height:1.25}
 
-  /* LEVELS */
+  /* NIVELES (3) */
   .levels{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
   .level{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:30px 26px;position:relative;text-align:center}
   .level .ic{width:42px;height:42px;color:var(--accent);margin:0 auto 16px}
@@ -109,7 +128,7 @@
   .ftext li::before{content:"";position:absolute;left:0;top:9px;width:8px;height:8px;border-radius:50%;background:var(--accent)}
   .fart{aspect-ratio:5/4;border-radius:var(--r);border:1px dashed var(--line);background:linear-gradient(160deg,var(--panel),var(--bg-2));display:flex;align-items:center;justify-content:center;color:var(--ink-dim);font-size:13px;text-align:center;padding:24px}
 
-  /* INGESTION */
+  /* INGESTA */
   .modes{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-bottom:28px}
   .mode{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:28px}
   .mode h3{font-size:18px;margin-bottom:6px}
@@ -120,7 +139,7 @@
   .tolerance{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:var(--r);padding:24px 26px}
   .tolerance p{color:var(--ink-soft);font-size:15px}
 
-  /* INTEGRATION */
+  /* INTEGRACION */
   .flow{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
   .flow-step{padding:34px 28px;background:var(--panel)}
   .flow-step + .flow-step{border-left:1px solid var(--line)}
@@ -128,7 +147,7 @@
   .flow-step h3{font-size:19px;margin-bottom:10px}
   .flow-step p{color:var(--ink-dim);font-size:14px}
 
-  /* CONTACT */
+  /* CONTACTO + FORM */
   .final{padding:110px 0;text-align:center;border-top:1px solid var(--line);background:radial-gradient(700px 300px at 50% 0%,rgba(47,154,224,.12),transparent 70%)}
   .final h2{font-size:clamp(30px,5vw,52px);margin-bottom:18px}
   .final p{color:var(--ink-soft);max-width:540px;margin:0 auto 34px;font-size:18px}
@@ -176,33 +195,35 @@
 </head>
 <body>
 
+<!-- NAV -->
 <header class="nav">
   <div class="wrap nav-in">
     <a href="#top" class="brand">CMU<i>Think</i></a>
     <nav class="nav-links" id="menu">
-      <a href="#top">Home</a>
-      <a href="#problem">Technology</a>
-      <a href="#levels">How it works</a>
-      <a href="#resolution">Spatial resolution</a>
-      <a href="#integration">Integration</a>
-      <a href="#contact" class="nav-cta">Request assessment</a>
+      <a href="#top">Inicio</a>
+      <a href="#problema">Tecnología</a>
+      <a href="#niveles">Cómo funciona</a>
+      <a href="#resolucion">Resolución espacial</a>
+      <a href="#integracion">Integración</a>
+      <a href="#contacto" class="nav-cta">Solicitar diagnóstico</a>
     </nav>
     <div class="nav-actions">
       <div class="lang-switcher" id="langSwitcher">
-        <button class="lang" type="button" aria-label="Select language" aria-haspopup="true" aria-expanded="false" aria-controls="langMenu" id="langToggle">
-          <span>EN</span>
+        <button class="lang" type="button" aria-label="Seleccionar idioma" aria-haspopup="true" aria-expanded="false" aria-controls="langMenu" id="langToggle">
+          <span>ES</span>
           <span class="lang-caret" aria-hidden="true">⌄</span>
         </button>
         <div class="lang-menu" id="langMenu" hidden>
-          <a href="cmu-think.html"><span>Español</span></a>
-          <a href="cmu-think-en.html" class="active"><span>English</span></a>
+          <a href="index.html" class="active"><span>Español</span></a>
+          <a href="index-en.html"><span>English</span></a>
         </div>
       </div>
-      <button class="burger" id="burger" aria-label="Menu">☰</button>
+      <button class="burger" id="burger" aria-label="Menú">☰</button>
     </div>
   </div>
 </header>
 
+<!-- HERO -->
 <section class="hero" id="top">
   <div class="hero-grid"></div>
   <svg class="hero-neuron" viewBox="0 0 400 400" fill="none" aria-hidden="true">
@@ -213,252 +234,260 @@
     </g>
   </svg>
   <div class="wrap hero-in">
-    <span class="eyebrow">Noise reduction for BCI</span>
-    <h1>Scalable resolution protocol</h1>
-    <p class="lead">Analytical resolution depends on data structure. CMU Think scales from basic signal cleaning to the reconstruction of neural activity across space and time.</p>
+    <span class="eyebrow">Reducción de ruido para BCI</span>
+    <h1>Protocolo de resolución escalable</h1>
+    <p class="lead">La resolución del análisis depende de la estructura de los datos. CMU Think escala desde la limpieza básica de la señal hasta la reconstrucción de la actividad neuronal en espacio y tiempo.</p>
     <div class="cta-row">
-      <a href="#contact" class="btn btn-primary">Request technical assessment</a>
-      <a href="#problem" class="btn btn-ghost">Explore the technology</a>
+      <a href="#contacto" class="btn btn-primary">Solicitar diagnóstico técnico</a>
+      <a href="#problema" class="btn btn-ghost">Conocer la tecnología</a>
     </div>
   </div>
 </section>
 
-<section class="band" id="problem">
+<!-- PROBLEMA -->
+<section class="band" id="problema">
   <div class="wrap">
-    <p class="sec-eyebrow reveal">The problem</p>
-    <h2 class="sec-title reveal">Brain signal arrives mixed</h2>
-    <p class="sec-sub reveal">The skull is a conductive medium: activity from one region propagates and reaches many electrodes at once. Combined with the statistical averaging of classical filters, the true origin of each event becomes difficult to localize.</p>
+    <p class="sec-eyebrow reveal">El problema</p>
+    <h2 class="sec-title reveal">La señal cerebral llega mezclada</h2>
+    <p class="sec-sub reveal">El cráneo es un medio conductor: la actividad de una región se propaga y llega a muchos electrodos a la vez. Sumado al promediado estadístico de los filtros clásicos, el origen real de cada evento se vuelve difícil de localizar.</p>
     <div class="problem">
       <div class="pcard reveal">
-        <h3>Volume conduction</h3>
-        <p>An electrode does not capture only its own region, but an attenuated mixture of neighboring regions. Spatial localization is lost.</p>
+        <h3>Conducción de volumen</h3>
+        <p>Un electrodo no captura solo su zona, sino una mezcla atenuada de regiones vecinas. La localización espacial se pierde.</p>
       </div>
       <div class="pcard reveal">
-        <h3>Statistical inertia</h3>
-        <p>Temporal averaging in classical filters dilutes fast signal dynamics and introduces delay.</p>
+        <h3>Estática estadística</h3>
+        <p>El promediado temporal de los filtros clásicos diluye la dinámica rápida de la señal e introduce retardo.</p>
       </div>
       <div class="pcard reveal">
-        <h3>Costly calibration</h3>
-        <p>Statistical mitigation techniques require expensive models, tissue assumptions, and long calibration cycles.</p>
+        <h3>Calibración costosa</h3>
+        <p>Las técnicas estadísticas para mitigarlo requieren modelos costosos, suposiciones de tejido y largas calibraciones.</p>
       </div>
       <div class="pcard win reveal">
-        <h3>CMU Think · structural approach</h3>
-        <p>It separates coherent information from noise through structure and restores the correspondence between electrode and source, without additional hardware.</p>
+        <h3>CMU Think · enfoque estructural</h3>
+        <p>Separa la información coherente del ruido por su estructura y restaura la correspondencia entre electrodo y fuente, sin hardware adicional.</p>
       </div>
     </div>
-    <p class="principle reveal">"Signal is not recovered by removing noise. It is recovered by understanding its structure."</p>
+    <p class="principle reveal">"La señal no se recupera eliminando ruido. Se recupera entendiendo su estructura."</p>
   </div>
 </section>
 
-<section class="band alt" id="levels">
+<!-- NIVELES -->
+<section class="band alt" id="niveles">
   <div class="wrap">
-    <p class="sec-eyebrow reveal">How it works</p>
-    <h2 class="sec-title reveal">A scalable architecture, not a fixed analysis</h2>
-    <p class="sec-sub reveal">As the system receives richer information, it scales from basic cleaning to the full reconstruction of activity across space and time.</p>
+    <p class="sec-eyebrow reveal">Cómo funciona</p>
+    <h2 class="sec-title reveal">Una arquitectura escalable, no un análisis fijo</h2>
+    <p class="sec-sub reveal">A medida que el sistema recibe información más rica, escala de la limpieza básica a la reconstrucción completa de la actividad en espacio y tiempo.</p>
     <div class="levels">
       <div class="level reveal">
         <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3a5 5 0 00-5 5c0 2 1 3 1 5a4 4 0 008 0c0-2 1-3 1-5a5 5 0 00-5-5zM12 2v2"/></svg>
-        <div class="tag">Level 1</div>
-        <h3>Pure signal</h3>
-        <p>It removes interference and preserves the signal's spectral integrity, detecting relevant events in real time with high clarity.</p>
+        <div class="tag">Nivel 1</div>
+        <h3>Señal pura</h3>
+        <p>Depura interferencias y preserva la integridad espectral de la señal, detectando en tiempo real eventos relevantes con alta claridad.</p>
       </div>
       <div class="level reveal">
         <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
-        <div class="tag">Level 2</div>
-        <h3>Topographic mapping</h3>
-        <p>When anatomical information is integrated, it localizes activity in precise spatial representations, revealing active regions and structural patterns.</p>
+        <div class="tag">Nivel 2</div>
+        <h3>Mapeo topográfico</h3>
+        <p>Al integrar información anatómica, localiza la actividad en representaciones espaciales precisas, revelando regiones activas y patrones estructurales.</p>
       </div>
       <div class="level reveal">
         <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 5v-2M12 21v-2M5 12H3M21 12h-2M7 7L5.5 5.5M17 17l1.5 1.5M17 7l1.5-1.5M7 17l-1.5 1.5"/></svg>
-        <div class="tag">Level 3</div>
-        <h3>Neural cinematography</h3>
-        <p>With complete multimodal data, it reconstructs activity dynamics across time and space, generating a high-resolution functional representation for advanced analysis.</p>
+        <div class="tag">Nivel 3</div>
+        <h3>Cinematografía neural</h3>
+        <p>Con datos multimodales completos, reconstruye la dinámica de la actividad en tiempo y espacio, generando una representación funcional de alta resolución para análisis avanzado.</p>
       </div>
     </div>
   </div>
 </section>
 
-<section class="band" id="resolution">
+<!-- RESOLUCION ESPACIAL (joya 1) + 4D (joya 2) -->
+<section class="band" id="resolucion">
   <div class="wrap">
-    <p class="sec-eyebrow reveal">The difference</p>
-    <h2 class="sec-title reveal">From mixed voltage to localized source</h2>
+    <p class="sec-eyebrow reveal">La diferencia</p>
+    <h2 class="sec-title reveal">De voltaje mezclado a fuente localizada</h2>
 
     <div class="feature" style="margin-top:40px">
       <div class="ftext reveal">
-        <h3>True spatial resolution</h3>
-        <p>Measurement systems label their channels with proprietary codes that carry no anatomical meaning. CMU Think translates them into the international standard, loads the spatial montage, and applies a filter that acts as a lens: it emphasizes the local source and separates distant contributions.</p>
+        <h3>Resolución espacial real</h3>
+        <p>Los equipos de medición etiquetan sus canales con códigos propios que no tienen significado anatómico. CMU Think los traduce al estándar internacional, carga el montaje espacial y aplica un filtro que actúa como lente: enfatiza la fuente local y separa contribuciones lejanas.</p>
         <ul>
-          <li>Translation of device channels into the anatomical standard.</li>
-          <li>Spatial filtering that separates neighboring sources previously mixed together.</li>
-          <li>Restores the correspondence between electrode and source region.</li>
+          <li>Traducción de los canales del equipo al estándar anatómico.</li>
+          <li>Filtro espacial que separa fuentes vecinas antes mezcladas.</li>
+          <li>Restaura la correspondencia entre electrodo y región de origen.</li>
         </ul>
       </div>
-      <div class="fart reveal">[ Pending visual: source separation before/after using the current 3D renders ]</div>
+      <div class="fart reveal">[ Visual pendiente: antes/después de separación de fuentes (renders 3D actuales) ]</div>
     </div>
 
     <div class="feature rev">
       <div class="ftext reveal">
-        <h3>4D neural cinematography</h3>
-        <p>A static image loses the dynamics of activity. CMU Think generates a sequence of frames showing how activity evolves over time, frame by frame.</p>
+        <h3>Cinematografía neural 4D</h3>
+        <p>Una imagen estática pierde la dinámica de la actividad. CMU Think genera una secuencia de fotogramas que muestra cómo evoluciona la actividad a lo largo del tiempo, fotograma a fotograma.</p>
         <ul>
-          <li>Reconstruction of activity as a temporal sequence rather than a snapshot.</li>
-          <li>Each element is tagged with its timing and intensity.</li>
-          <li>Foundation for dynamic analysis and structural pattern detection.</li>
+          <li>Reconstrucción de la actividad como secuencia temporal, no como instantánea.</li>
+          <li>Cada elemento queda etiquetado con su instante e intensidad.</li>
+          <li>Base para análisis de dinámica y patrones estructurales.</li>
         </ul>
       </div>
-      <div class="fart reveal">[ Pending visual: 4D activation sequence from sub-01 to sub-08 renders ]</div>
+      <div class="fart reveal">[ Visual pendiente: secuencia 4D de activación (renders sub-01 a sub-08) ]</div>
     </div>
   </div>
 </section>
 
+<!-- HACIA NEUROTECNOLOGIA ACTIVA (bidireccional, encuadre investigacion) -->
 <section class="band alt">
   <div class="wrap">
     <div class="feature">
       <div class="ftext reveal">
-        <p class="sec-eyebrow">Toward active neurotechnology</p>
-        <h3>From reading to the possibility of response</h3>
-        <p>Once a system knows precisely where and when an event occurs, it becomes possible to imagine platforms that not only read activity, but also respond to it in synchrony. CMU Think provides the spatiotemporal reading layer these research scenarios require.</p>
-        <p style="color:var(--ink-dim);font-size:14px">Research applications only. This is not a medical device or a diagnostic or treatment tool.</p>
+        <p class="sec-eyebrow">Hacia la neurotecnología activa</p>
+        <h3>De la lectura a la posibilidad de respuesta</h3>
+        <p>Cuando se conoce con precisión dónde y cuándo ocurre un evento, se abre la puerta a sistemas que no solo leen la actividad, sino que pueden responder a ella de forma sincronizada. CMU Think aporta la capa de lectura espaciotemporal que estos escenarios de investigación requieren.</p>
+        <p style="color:var(--ink-dim);font-size:14px">Aplicaciones de investigación. No constituye un dispositivo médico ni una herramienta de diagnóstico o tratamiento.</p>
       </div>
-      <div class="fart reveal">[ Pending visual: synchronized reading-and-response diagram ]</div>
+      <div class="fart reveal">[ Visual pendiente: esquema de lectura y respuesta sincronizada ]</div>
     </div>
   </div>
 </section>
 
-<section class="band" id="ingestion">
+<!-- INGESTA UNIVERSAL -->
+<section class="band" id="ingesta">
   <div class="wrap">
-    <p class="sec-eyebrow reveal">Universal ingestion</p>
-    <h2 class="sec-title reveal">From raw data to structured datasets</h2>
-    <p class="sec-sub reveal">The system ingests different levels of data quality without losing its core function, and adjusts what it can deliver according to what it receives.</p>
+    <p class="sec-eyebrow reveal">Ingesta universal</p>
+    <h2 class="sec-title reveal">De datos crudos a datasets estructurados</h2>
+    <p class="sec-sub reveal">El sistema ingiere distintos niveles de calidad de datos sin perder su función central, y ajusta lo que puede entregar según lo que recibe.</p>
     <div class="modes">
       <div class="mode reveal">
-        <span class="k">Full mode</span>
-        <h3>Structured clinical data</h3>
+        <span class="k">Modo completo</span>
+        <h3>Datos clínicos estructurados</h3>
         <ul>
-          <li>Multimodal with cross-validation.</li>
-          <li>Channel translation and spatial filter applied.</li>
-          <li>4D reconstruction and source localization.</li>
+          <li>Multimodal con validación cruzada.</li>
+          <li>Traducción de canales y filtro espacial aplicados.</li>
+          <li>Reconstrucción 4D y localización de fuente.</li>
         </ul>
       </div>
       <div class="mode reveal">
-        <span class="k">Flat mode</span>
-        <h3>Raw data (Excel / CSV)</h3>
+        <span class="k">Modo plano</span>
+        <h3>Datos crudos (Excel / CSV)</h3>
         <ul>
-          <li>Automatic matrix-orientation detection.</li>
-          <li>Defensive sanitization of invalid values.</li>
-          <li>Cleaning that preserves signal morphology.</li>
+          <li>Auto-detección de orientación de la matriz.</li>
+          <li>Sanitización defensiva de valores inválidos.</li>
+          <li>Limpieza con preservación de la morfología de la señal.</li>
         </ul>
       </div>
     </div>
     <div class="tolerance reveal">
-      <p>Fault tolerance: one corrupted value does not halt analysis of the rest. Each problematic case is reported and the pipeline continues with the available information.</p>
+      <p>Tolerancia a fallos: un dato corrupto no detiene el análisis del resto. Cada caso problemático se reporta y el pipeline continúa con la información disponible.</p>
     </div>
   </div>
 </section>
 
-<section class="band alt" id="integration">
+<!-- INTEGRACION -->
+<section class="band alt" id="integracion">
   <div class="wrap">
-    <p class="sec-eyebrow reveal">Integration</p>
-    <h2 class="sec-title reveal">From technical validation to enterprise integration</h2>
-    <p class="sec-sub reveal">A staged path, without premature commitments.</p>
+    <p class="sec-eyebrow reveal">Integración</p>
+    <h2 class="sec-title reveal">De la prueba técnica a la integración empresarial</h2>
+    <p class="sec-sub reveal">Un camino por etapas, sin compromisos prematuros.</p>
     <div class="flow">
       <div class="flow-step reveal">
         <div class="n">01</div>
-        <h3>Technical assessment</h3>
-        <p>We analyze your use case, available data, constraints, and objectives.</p>
+        <h3>Diagnóstico técnico</h3>
+        <p>Analizamos tu caso de uso, datos disponibles, restricciones y objetivos.</p>
       </div>
       <div class="flow-step reveal">
         <div class="n">02</div>
-        <h3>Controlled pilot</h3>
-        <p>We validate resolution, stability, and traceability using your own data.</p>
+        <h3>Piloto controlado</h3>
+        <p>Validamos resolución, estabilidad y trazabilidad sobre tus propios datos.</p>
       </div>
       <div class="flow-step reveal">
         <div class="n">03</div>
-        <h3>Licensing and integration</h3>
-        <p>We deploy as an SDK, integrated module, local server, or tailored solution.</p>
+        <h3>Licencia e integración</h3>
+        <p>Desplegamos como SDK, módulo integrado, servidor local o solución a medida.</p>
       </div>
     </div>
   </div>
 </section>
 
-<section class="final" id="contact">
+<!-- CONTACTO + FORM -->
+<section class="final" id="contacto">
   <div class="wrap">
-    <h2>Bring CMU Think into your research</h2>
-    <p>Tell us about your use case and we will schedule a technical assessment.</p>
+    <h2>Lleva CMU Think a tu investigación</h2>
+    <p>Cuéntanos tu caso de uso y agendamos un diagnóstico técnico.</p>
 
     <form class="cform reveal" id="cform" novalidate>
       <div class="frow">
         <div class="field">
-          <label for="name">Name</label>
-          <input id="name" name="name" type="text" autocomplete="name" required>
+          <label for="nombre">Nombre</label>
+          <input id="nombre" name="nombre" type="text" autocomplete="name" required>
         </div>
         <div class="field">
-          <label for="organization">Company or organization</label>
-          <input id="organization" name="organization" type="text" autocomplete="organization">
+          <label for="empresa">Empresa u organización</label>
+          <input id="empresa" name="empresa" type="text" autocomplete="organization">
         </div>
       </div>
       <div class="frow">
         <div class="field">
-          <label for="email">Email</label>
+          <label for="email">Correo</label>
           <input id="email" name="email" type="email" autocomplete="email" required>
         </div>
         <div class="field">
-          <label for="phone">Phone</label>
-          <input id="phone" name="phone" type="tel" autocomplete="tel">
+          <label for="telefono">Teléfono</label>
+          <input id="telefono" name="telefono" type="tel" autocomplete="tel">
         </div>
       </div>
       <div class="field">
-        <label for="interest">Type of interest</label>
-        <select id="interest" name="interest">
-          <option value="">Select an option</option>
-          <option>Technical assessment</option>
-          <option>Pilot</option>
-          <option>Licensing</option>
-          <option>Integration</option>
-          <option>Technical consultation</option>
+        <label for="interes">Tipo de interés</label>
+        <select id="interes" name="interes">
+          <option value="">Selecciona una opción</option>
+          <option>Diagnóstico técnico</option>
+          <option>Piloto</option>
+          <option>Licenciamiento</option>
+          <option>Integración</option>
+          <option>Consulta técnica</option>
         </select>
       </div>
       <div class="field">
-        <label for="message">Describe your use case</label>
-        <textarea id="message" name="message" rows="4" required></textarea>
+        <label for="mensaje">Describe tu caso de uso</label>
+        <textarea id="mensaje" name="mensaje" rows="4" required></textarea>
       </div>
 
       <label class="consent">
         <input type="checkbox" id="consent" name="consent" required>
-        <span>I have read and accept the <a href="privacidad-think-en.html" target="_blank" rel="noopener">privacy notice</a> and authorize the processing of my data in accordance with the LFPDPPP.</span>
+        <span>He leído y acepto el <a href="privacidad-think.html" target="_blank" rel="noopener">aviso de privacidad</a> y autorizo el tratamiento de mis datos conforme a la LFPDPPP.</span>
       </label>
 
-      <button type="submit" class="btn btn-primary" style="margin-top:8px">Request technical assessment</button>
+      <button type="submit" class="btn btn-primary" style="margin-top:8px">Solicitar diagnóstico técnico</button>
       <p class="form-note" id="form-note" role="status" aria-live="polite"></p>
     </form>
   </div>
 </section>
 
+<!-- FOOTER -->
 <footer>
   <div class="wrap">
     <div class="foot-grid">
       <div>
         <div class="foot-brand">CMU<i>Think</i></div>
-        <p style="margin-top:14px;max-width:320px">Noise reduction and neural activity reconstruction for BCI research.</p>
+        <p style="margin-top:14px;max-width:320px">Reducción de ruido y reconstrucción de actividad neuronal para investigación en BCI.</p>
       </div>
       <div>
-        <h4>Navigation</h4>
-        <a href="#problem">Technology</a>
-        <a href="#levels">How it works</a>
-        <a href="#resolution">Spatial resolution</a>
-        <a href="#integration">Integration</a>
+        <h4>Navegación</h4>
+        <a href="#problema">Tecnología</a>
+        <a href="#niveles">Cómo funciona</a>
+        <a href="#resolucion">Resolución espacial</a>
+        <a href="#integracion">Integración</a>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h4>Contacto</h4>
         <p>+52 222 964 8206</p>
-        <p>Puebla, Mexico</p>
-        <a href="#contact">Request assessment</a>
-        <a href="privacidad-think-en.html">Privacy notice</a>
+        <p>Puebla, México</p>
+        <a href="#contacto">Solicitar diagnóstico</a>
+        <a href="privacidad-think.html">Aviso de privacidad</a>
       </div>
     </div>
     <div class="foot-base">
-      <span>© 2026 [LEGAL ENTITY]. Limited distribution.</span>
-      <span><a href="privacidad-think-en.html">Privacy notice</a> · Technical document available upon request and NDA</span>
+      <span>© 2026 [RAZÓN SOCIAL]. Difusión limitada.</span>
+      <span><a href="privacidad-think.html">Aviso de privacidad</a> · Documento técnico bajo solicitud y NDA</span>
     </div>
   </div>
 </footer>
@@ -511,22 +540,25 @@
     initLang('langSwitcher','langToggle','langMenu');
   })();
 
+  // Formulario de contacto
+  // NOTA: maqueta sin backend. Conectar el envio real aqui (Wix Forms / API). Sin CDN externo.
   const form=document.getElementById('cform');
   const note=document.getElementById('form-note');
   form.addEventListener('submit',(ev)=>{
     ev.preventDefault();
     note.className='form-note';
     if(!form.checkValidity()){
-      note.textContent='Please review the required fields.';
+      note.textContent='Revisa los campos obligatorios.';
       note.classList.add('err');
       return;
     }
     if(!document.getElementById('consent').checked){
-      note.textContent='You must accept the privacy notice to continue.';
+      note.textContent='Debes aceptar el aviso de privacidad para continuar.';
       note.classList.add('err');
       return;
     }
-    note.textContent='Thank you. We have received your request and will contact you soon.';
+    // TODO: enviar datos al backend / servicio de formularios
+    note.textContent='Gracias. Hemos recibido tu solicitud y te contactaremos pronto.';
     note.classList.add('ok');
     form.reset();
   });
