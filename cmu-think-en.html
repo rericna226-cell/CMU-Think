@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CMU Think | Noise reduction and neural activity reconstruction</title>
+<meta name="description" content="CMU Think cleans, localizes, and reconstructs neural activity across space and time. A scalable signal-processing architecture for brain-computer interface research (BCI).">
+
+<style>
+  :root{
+    --bg:#0a0c10;
+    --bg-2:#0f131a;
+    --panel:#12161e;
+    --ink:#eef2f7;
+    --ink-soft:#aeb6c2;
+    --ink-dim:#79828f;
+    --line:#1d2330;
+    --accent:#2f9ae0;
+    --accent-deep:#1f6fb0;
+    --accent-ink:#0a0c10;
+    --r:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  h1,h2,h3{line-height:1.08;letter-spacing:-0.02em;font-weight:800}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+  .accent{color:var(--accent)}
+
+  /* NAV */
+  header.nav{position:sticky;top:0;z-index:50;background:rgba(10,12,16,.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand{font-weight:800;font-size:20px;letter-spacing:.04em}
+  .brand i{font-style:italic;color:var(--accent)}
+  .nav-links{display:flex;gap:30px;align-items:center}
+  .nav-links a{color:var(--ink-soft);font-size:14px;letter-spacing:.03em;transition:color .2s}
+  .nav-links a:hover{color:var(--ink)}
+  .nav-cta{border:1px solid var(--accent);color:var(--accent);padding:8px 16px;border-radius:999px;font-size:13px;font-weight:600;transition:background .2s,color .2s}
+  .nav-cta:hover{background:var(--accent);color:var(--accent-ink)}
+  .nav-actions{display:flex;align-items:center;gap:12px}
+  .burger{display:none;background:none;border:0;color:var(--ink);font-size:26px;cursor:pointer}
+  .lang-switcher{position:relative}
+  .lang{display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 12px;border-radius:999px;background:transparent;border:1px solid var(--line);color:var(--ink-soft);font-weight:800;font-size:12px;letter-spacing:.14em;cursor:pointer;transition:border-color .2s,color .2s,background .2s}
+  .lang:hover{border-color:var(--accent-deep);color:var(--ink)}
+  .lang-switcher.open .lang{border-color:var(--accent);color:var(--ink)}
+  .lang-caret{color:var(--ink-dim);font-size:14px;line-height:1}
+  .lang-menu{position:absolute;top:calc(100% + 10px);right:0;min-width:180px;background:rgba(15,19,26,.98);border:1px solid var(--line);border-radius:14px;padding:10px;display:grid;gap:6px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+  .lang-menu[hidden]{display:none}
+  .lang-menu a{padding:10px 12px;border-radius:12px;color:var(--ink-soft);border:1px solid transparent}
+  .lang-menu a:hover{background:rgba(47,154,224,.10);border-color:rgba(47,154,224,.25);color:var(--ink)}
+  .lang-menu a.active{background:rgba(47,154,224,.14);border-color:rgba(47,154,224,.35);color:var(--ink)}
+
+  /* HERO */
+  .hero{position:relative;padding:120px 0 100px;overflow:hidden}
+  .hero-grid{position:absolute;inset:0;background:radial-gradient(900px 520px at 76% 30%, rgba(47,154,224,.18), transparent 60%),linear-gradient(180deg,var(--bg),var(--bg-2));z-index:0}
+  .hero-neuron{position:absolute;right:-4%;top:6%;width:54%;height:88%;opacity:.45;z-index:0}
+  .hero-in{position:relative;z-index:2;max-width:720px}
+  .eyebrow{display:inline-block;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);border:1px solid var(--line);padding:6px 12px;border-radius:999px;margin-bottom:26px}
+  .hero h1{font-size:clamp(38px,6vw,66px);margin-bottom:20px}
+  .hero .lead{font-size:clamp(17px,2.2vw,21px);color:var(--ink-soft);max-width:620px;margin-bottom:36px}
+  .cta-row{display:flex;gap:14px;flex-wrap:wrap}
+  .btn{display:inline-block;padding:14px 26px;border-radius:999px;font-weight:700;font-size:15px;cursor:pointer;border:1px solid transparent;transition:transform .15s,background .2s,border-color .2s}
+  .btn:hover{transform:translateY(-2px)}
+  .btn-primary{background:var(--accent);color:var(--accent-ink)}
+  .btn-primary:hover{background:#3aa9f0}
+  .btn-ghost{border-color:var(--line);color:var(--ink)}
+  .btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
+
+  /* SECTION SHELL */
+  .band{padding:96px 0;border-top:1px solid var(--line)}
+  .band.alt{background:var(--bg-2)}
+  .sec-eyebrow{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-deep);margin-bottom:14px;font-weight:700}
+  .sec-title{font-size:clamp(28px,4vw,44px);margin-bottom:18px;max-width:780px}
+  .sec-sub{color:var(--ink-soft);max-width:700px;font-size:17px;margin-bottom:46px}
+
+  /* PROBLEM */
+  .problem{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:stretch}
+  .pcard{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:30px}
+  .pcard h3{font-size:18px;margin-bottom:10px}
+  .pcard p{color:var(--ink-dim);font-size:15px}
+  .pcard.win{border-color:var(--accent-deep);background:linear-gradient(180deg,rgba(47,154,224,.08),var(--panel))}
+  .pcard.win h3{color:var(--accent)}
+  .pcard.win p{color:var(--ink-soft)}
+  .principle{margin-top:42px;border-left:3px solid var(--accent);padding:6px 0 6px 22px;font-size:clamp(20px,3vw,30px);font-weight:700;letter-spacing:-.02em;max-width:800px;line-height:1.25}
+
+  /* LEVELS */
+  .levels{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .level{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:30px 26px;position:relative;text-align:center}
+  .level .ic{width:42px;height:42px;color:var(--accent);margin:0 auto 16px}
+  .level .tag{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-deep);font-weight:800;margin-bottom:8px}
+  .level h3{font-size:20px;margin-bottom:12px}
+  .level p{color:var(--ink-dim);font-size:15px}
+
+  /* FEATURE ROWS */
+  .feature{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+  .feature + .feature{margin-top:64px}
+  .feature.rev .ftext{order:2}
+  .ftext h3{font-size:clamp(24px,3.4vw,34px);margin-bottom:16px}
+  .ftext p{color:var(--ink-soft);font-size:16px;margin-bottom:14px}
+  .ftext ul{list-style:none;display:grid;gap:10px;margin-top:10px}
+  .ftext li{position:relative;padding-left:22px;color:var(--ink-soft);font-size:15px}
+  .ftext li::before{content:"";position:absolute;left:0;top:9px;width:8px;height:8px;border-radius:50%;background:var(--accent)}
+  .fart{aspect-ratio:5/4;border-radius:var(--r);border:1px dashed var(--line);background:linear-gradient(160deg,var(--panel),var(--bg-2));display:flex;align-items:center;justify-content:center;color:var(--ink-dim);font-size:13px;text-align:center;padding:24px}
+
+  /* INGESTION */
+  .modes{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-bottom:28px}
+  .mode{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:28px}
+  .mode h3{font-size:18px;margin-bottom:6px}
+  .mode .k{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-deep);font-weight:700;margin-bottom:14px;display:block}
+  .mode ul{list-style:none;display:grid;gap:8px}
+  .mode li{position:relative;padding-left:20px;color:var(--ink-soft);font-size:14px}
+  .mode li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+  .tolerance{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:var(--r);padding:24px 26px}
+  .tolerance p{color:var(--ink-soft);font-size:15px}
+
+  /* INTEGRATION */
+  .flow{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+  .flow-step{padding:34px 28px;background:var(--panel)}
+  .flow-step + .flow-step{border-left:1px solid var(--line)}
+  .flow-step .n{font-size:13px;font-weight:800;color:var(--accent-deep);letter-spacing:.1em;margin-bottom:14px}
+  .flow-step h3{font-size:19px;margin-bottom:10px}
+  .flow-step p{color:var(--ink-dim);font-size:14px}
+
+  /* CONTACT */
+  .final{padding:110px 0;text-align:center;border-top:1px solid var(--line);background:radial-gradient(700px 300px at 50% 0%,rgba(47,154,224,.12),transparent 70%)}
+  .final h2{font-size:clamp(30px,5vw,52px);margin-bottom:18px}
+  .final p{color:var(--ink-soft);max-width:540px;margin:0 auto 34px;font-size:18px}
+  .cform{max-width:640px;margin:44px auto 0;text-align:left}
+  .frow{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .field{margin-bottom:18px;display:flex;flex-direction:column}
+  .field label{font-size:13px;color:var(--ink-soft);margin-bottom:7px;letter-spacing:.02em}
+  .field input,.field select,.field textarea{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;color:var(--ink);font-size:15px;font-family:inherit;transition:border-color .2s;width:100%}
+  .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--accent)}
+  .field textarea{resize:vertical}
+  .consent{display:flex;gap:12px;align-items:flex-start;text-align:left;margin:6px 0 4px;font-size:13px;color:var(--ink-soft)}
+  .consent input{margin-top:4px;flex-shrink:0;accent-color:var(--accent)}
+  .consent a{color:var(--accent);text-decoration:underline}
+  .form-note{font-size:14px;margin-top:14px;min-height:20px}
+  .form-note.ok{color:var(--accent)}
+  .form-note.err{color:#e06a6a}
+
+  /* FOOTER */
+  footer{background:var(--bg-2);border-top:1px solid var(--line);padding:60px 0 36px}
+  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:36px;margin-bottom:40px}
+  .foot-brand{font-size:30px;font-weight:800;letter-spacing:.04em}
+  .foot-brand i{font-style:italic;color:var(--accent)}
+  footer h4{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:16px}
+  footer a,footer p{color:var(--ink-soft);font-size:14px;display:block;margin-bottom:8px}
+  footer a:hover{color:var(--accent)}
+  .foot-base{border-top:1px solid var(--line);padding-top:24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;color:var(--ink-dim);font-size:13px}
+  .foot-base a{color:var(--ink-dim);display:inline}
+
+  /* RESPONSIVE */
+  @media(max-width:880px){
+    .nav-links{position:fixed;inset:64px 0 auto 0;flex-direction:column;gap:0;background:var(--bg-2);border-bottom:1px solid var(--line);transform:translateY(-120%);transition:transform .3s;padding:10px 0}
+    .nav-links.open{transform:translateY(0)}
+    .nav-links a{padding:14px 28px;width:100%}
+    .nav-cta{margin:10px 28px}
+    .burger{display:block}
+    .problem,.levels,.feature,.feature.rev .ftext,.modes,.flow,.foot-grid,.frow{grid-template-columns:1fr}
+    .feature.rev .ftext{order:0}
+    .flow-step + .flow-step{border-left:0;border-top:1px solid var(--line)}
+  }
+  @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .6s,transform .6s}
+  .reveal.in{opacity:1;transform:none}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a href="#top" class="brand">CMU<i>Think</i></a>
+    <nav class="nav-links" id="menu">
+      <a href="#top">Home</a>
+      <a href="#problem">Technology</a>
+      <a href="#levels">How it works</a>
+      <a href="#resolution">Spatial resolution</a>
+      <a href="#integration">Integration</a>
+      <a href="#contact" class="nav-cta">Request assessment</a>
+    </nav>
+    <div class="nav-actions">
+      <div class="lang-switcher" id="langSwitcher">
+        <button class="lang" type="button" aria-label="Select language" aria-haspopup="true" aria-expanded="false" aria-controls="langMenu" id="langToggle">
+          <span>EN</span>
+          <span class="lang-caret" aria-hidden="true">⌄</span>
+        </button>
+        <div class="lang-menu" id="langMenu" hidden>
+          <a href="cmu-think.html"><span>Español</span></a>
+          <a href="cmu-think-en.html" class="active"><span>English</span></a>
+        </div>
+      </div>
+      <button class="burger" id="burger" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div class="hero-grid"></div>
+  <svg class="hero-neuron" viewBox="0 0 400 400" fill="none" aria-hidden="true">
+    <g stroke="#2f9ae0" stroke-width="1.2" opacity="0.7">
+      <circle cx="200" cy="200" r="34" fill="rgba(47,154,224,.12)"/>
+      <path d="M200 166 L200 90M200 234 L200 320M166 200 L70 180M234 200 L330 210M176 176 L110 110M224 224 L300 300M224 176 L300 110M176 224 L110 300"/>
+      <circle cx="200" cy="90" r="5"/><circle cx="200" cy="320" r="5"/><circle cx="70" cy="180" r="5"/><circle cx="330" cy="210" r="5"/><circle cx="110" cy="110" r="5"/><circle cx="300" cy="300" r="5"/><circle cx="300" cy="110" r="5"/><circle cx="110" cy="300" r="5"/>
+    </g>
+  </svg>
+  <div class="wrap hero-in">
+    <span class="eyebrow">Noise reduction for BCI</span>
+    <h1>Scalable resolution protocol</h1>
+    <p class="lead">Analytical resolution depends on data structure. CMU Think scales from basic signal cleaning to the reconstruction of neural activity across space and time.</p>
+    <div class="cta-row">
+      <a href="#contact" class="btn btn-primary">Request technical assessment</a>
+      <a href="#problem" class="btn btn-ghost">Explore the technology</a>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="problem">
+  <div class="wrap">
+    <p class="sec-eyebrow reveal">The problem</p>
+    <h2 class="sec-title reveal">Brain signal arrives mixed</h2>
+    <p class="sec-sub reveal">The skull is a conductive medium: activity from one region propagates and reaches many electrodes at once. Combined with the statistical averaging of classical filters, the true origin of each event becomes difficult to localize.</p>
+    <div class="problem">
+      <div class="pcard reveal">
+        <h3>Volume conduction</h3>
+        <p>An electrode does not capture only its own region, but an attenuated mixture of neighboring regions. Spatial localization is lost.</p>
+      </div>
+      <div class="pcard reveal">
+        <h3>Statistical inertia</h3>
+        <p>Temporal averaging in classical filters dilutes fast signal dynamics and introduces delay.</p>
+      </div>
+      <div class="pcard reveal">
+        <h3>Costly calibration</h3>
+        <p>Statistical mitigation techniques require expensive models, tissue assumptions, and long calibration cycles.</p>
+      </div>
+      <div class="pcard win reveal">
+        <h3>CMU Think · structural approach</h3>
+        <p>It separates coherent information from noise through structure and restores the correspondence between electrode and source, without additional hardware.</p>
+      </div>
+    </div>
+    <p class="principle reveal">"Signal is not recovered by removing noise. It is recovered by understanding its structure."</p>
+  </div>
+</section>
+
+<section class="band alt" id="levels">
+  <div class="wrap">
+    <p class="sec-eyebrow reveal">How it works</p>
+    <h2 class="sec-title reveal">A scalable architecture, not a fixed analysis</h2>
+    <p class="sec-sub reveal">As the system receives richer information, it scales from basic cleaning to the full reconstruction of activity across space and time.</p>
+    <div class="levels">
+      <div class="level reveal">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3a5 5 0 00-5 5c0 2 1 3 1 5a4 4 0 008 0c0-2 1-3 1-5a5 5 0 00-5-5zM12 2v2"/></svg>
+        <div class="tag">Level 1</div>
+        <h3>Pure signal</h3>
+        <p>It removes interference and preserves the signal's spectral integrity, detecting relevant events in real time with high clarity.</p>
+      </div>
+      <div class="level reveal">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+        <div class="tag">Level 2</div>
+        <h3>Topographic mapping</h3>
+        <p>When anatomical information is integrated, it localizes activity in precise spatial representations, revealing active regions and structural patterns.</p>
+      </div>
+      <div class="level reveal">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 5v-2M12 21v-2M5 12H3M21 12h-2M7 7L5.5 5.5M17 17l1.5 1.5M17 7l1.5-1.5M7 17l-1.5 1.5"/></svg>
+        <div class="tag">Level 3</div>
+        <h3>Neural cinematography</h3>
+        <p>With complete multimodal data, it reconstructs activity dynamics across time and space, generating a high-resolution functional representation for advanced analysis.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="resolution">
+  <div class="wrap">
+    <p class="sec-eyebrow reveal">The difference</p>
+    <h2 class="sec-title reveal">From mixed voltage to localized source</h2>
+
+    <div class="feature" style="margin-top:40px">
+      <div class="ftext reveal">
+        <h3>True spatial resolution</h3>
+        <p>Measurement systems label their channels with proprietary codes that carry no anatomical meaning. CMU Think translates them into the international standard, loads the spatial montage, and applies a filter that acts as a lens: it emphasizes the local source and separates distant contributions.</p>
+        <ul>
+          <li>Translation of device channels into the anatomical standard.</li>
+          <li>Spatial filtering that separates neighboring sources previously mixed together.</li>
+          <li>Restores the correspondence between electrode and source region.</li>
+        </ul>
+      </div>
+      <div class="fart reveal">[ Pending visual: source separation before/after using the current 3D renders ]</div>
+    </div>
+
+    <div class="feature rev">
+      <div class="ftext reveal">
+        <h3>4D neural cinematography</h3>
+        <p>A static image loses the dynamics of activity. CMU Think generates a sequence of frames showing how activity evolves over time, frame by frame.</p>
+        <ul>
+          <li>Reconstruction of activity as a temporal sequence rather than a snapshot.</li>
+          <li>Each element is tagged with its timing and intensity.</li>
+          <li>Foundation for dynamic analysis and structural pattern detection.</li>
+        </ul>
+      </div>
+      <div class="fart reveal">[ Pending visual: 4D activation sequence from sub-01 to sub-08 renders ]</div>
+    </div>
+  </div>
+</section>
+
+<section class="band alt">
+  <div class="wrap">
+    <div class="feature">
+      <div class="ftext reveal">
+        <p class="sec-eyebrow">Toward active neurotechnology</p>
+        <h3>From reading to the possibility of response</h3>
+        <p>Once a system knows precisely where and when an event occurs, it becomes possible to imagine platforms that not only read activity, but also respond to it in synchrony. CMU Think provides the spatiotemporal reading layer these research scenarios require.</p>
+        <p style="color:var(--ink-dim);font-size:14px">Research applications only. This is not a medical device or a diagnostic or treatment tool.</p>
+      </div>
+      <div class="fart reveal">[ Pending visual: synchronized reading-and-response diagram ]</div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="ingestion">
+  <div class="wrap">
+    <p class="sec-eyebrow reveal">Universal ingestion</p>
+    <h2 class="sec-title reveal">From raw data to structured datasets</h2>
+    <p class="sec-sub reveal">The system ingests different levels of data quality without losing its core function, and adjusts what it can deliver according to what it receives.</p>
+    <div class="modes">
+      <div class="mode reveal">
+        <span class="k">Full mode</span>
+        <h3>Structured clinical data</h3>
+        <ul>
+          <li>Multimodal with cross-validation.</li>
+          <li>Channel translation and spatial filter applied.</li>
+          <li>4D reconstruction and source localization.</li>
+        </ul>
+      </div>
+      <div class="mode reveal">
+        <span class="k">Flat mode</span>
+        <h3>Raw data (Excel / CSV)</h3>
+        <ul>
+          <li>Automatic matrix-orientation detection.</li>
+          <li>Defensive sanitization of invalid values.</li>
+          <li>Cleaning that preserves signal morphology.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="tolerance reveal">
+      <p>Fault tolerance: one corrupted value does not halt analysis of the rest. Each problematic case is reported and the pipeline continues with the available information.</p>
+    </div>
+  </div>
+</section>
+
+<section class="band alt" id="integration">
+  <div class="wrap">
+    <p class="sec-eyebrow reveal">Integration</p>
+    <h2 class="sec-title reveal">From technical validation to enterprise integration</h2>
+    <p class="sec-sub reveal">A staged path, without premature commitments.</p>
+    <div class="flow">
+      <div class="flow-step reveal">
+        <div class="n">01</div>
+        <h3>Technical assessment</h3>
+        <p>We analyze your use case, available data, constraints, and objectives.</p>
+      </div>
+      <div class="flow-step reveal">
+        <div class="n">02</div>
+        <h3>Controlled pilot</h3>
+        <p>We validate resolution, stability, and traceability using your own data.</p>
+      </div>
+      <div class="flow-step reveal">
+        <div class="n">03</div>
+        <h3>Licensing and integration</h3>
+        <p>We deploy as an SDK, integrated module, local server, or tailored solution.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="final" id="contact">
+  <div class="wrap">
+    <h2>Bring CMU Think into your research</h2>
+    <p>Tell us about your use case and we will schedule a technical assessment.</p>
+
+    <form class="cform reveal" id="cform" novalidate>
+      <div class="frow">
+        <div class="field">
+          <label for="name">Name</label>
+          <input id="name" name="name" type="text" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label for="organization">Company or organization</label>
+          <input id="organization" name="organization" type="text" autocomplete="organization">
+        </div>
+      </div>
+      <div class="frow">
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" autocomplete="email" required>
+        </div>
+        <div class="field">
+          <label for="phone">Phone</label>
+          <input id="phone" name="phone" type="tel" autocomplete="tel">
+        </div>
+      </div>
+      <div class="field">
+        <label for="interest">Type of interest</label>
+        <select id="interest" name="interest">
+          <option value="">Select an option</option>
+          <option>Technical assessment</option>
+          <option>Pilot</option>
+          <option>Licensing</option>
+          <option>Integration</option>
+          <option>Technical consultation</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="message">Describe your use case</label>
+        <textarea id="message" name="message" rows="4" required></textarea>
+      </div>
+
+      <label class="consent">
+        <input type="checkbox" id="consent" name="consent" required>
+        <span>I have read and accept the <a href="privacidad-think-en.html" target="_blank" rel="noopener">privacy notice</a> and authorize the processing of my data in accordance with the LFPDPPP.</span>
+      </label>
+
+      <button type="submit" class="btn btn-primary" style="margin-top:8px">Request technical assessment</button>
+      <p class="form-note" id="form-note" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-brand">CMU<i>Think</i></div>
+        <p style="margin-top:14px;max-width:320px">Noise reduction and neural activity reconstruction for BCI research.</p>
+      </div>
+      <div>
+        <h4>Navigation</h4>
+        <a href="#problem">Technology</a>
+        <a href="#levels">How it works</a>
+        <a href="#resolution">Spatial resolution</a>
+        <a href="#integration">Integration</a>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <p>+52 222 964 8206</p>
+        <p>Puebla, Mexico</p>
+        <a href="#contact">Request assessment</a>
+        <a href="privacidad-think-en.html">Privacy notice</a>
+      </div>
+    </div>
+    <div class="foot-base">
+      <span>© 2026 [LEGAL ENTITY]. Limited distribution.</span>
+      <span><a href="privacidad-think-en.html">Privacy notice</a> · Technical document available upon request and NDA</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const burger=document.getElementById('burger');
+  const menu=document.getElementById('menu');
+  burger.addEventListener('click',()=>menu.classList.toggle('open'));
+  menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>menu.classList.remove('open')));
+
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
+  },{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  (()=>{
+    function initLang(switcherId,toggleId,menuId){
+      const switcher=document.getElementById(switcherId);
+      const toggle=document.getElementById(toggleId);
+      const menu=document.getElementById(menuId);
+      if(!switcher||!toggle||!menu) return;
+
+      function close(){
+        menu.hidden=true;
+        switcher.classList.remove('open');
+        toggle.setAttribute('aria-expanded','false');
+      }
+
+      function open(){
+        menu.hidden=false;
+        switcher.classList.add('open');
+        toggle.setAttribute('aria-expanded','true');
+      }
+
+      toggle.addEventListener('click',(event)=>{
+        event.stopPropagation();
+        if(menu.hidden) open();
+        else close();
+      });
+
+      document.addEventListener('click',(event)=>{
+        if(!switcher.contains(event.target)) close();
+      });
+
+      document.addEventListener('keydown',(event)=>{
+        if(event.key==='Escape') close();
+      });
+    }
+
+    initLang('langSwitcher','langToggle','langMenu');
+  })();
+
+  const form=document.getElementById('cform');
+  const note=document.getElementById('form-note');
+  form.addEventListener('submit',(ev)=>{
+    ev.preventDefault();
+    note.className='form-note';
+    if(!form.checkValidity()){
+      note.textContent='Please review the required fields.';
+      note.classList.add('err');
+      return;
+    }
+    if(!document.getElementById('consent').checked){
+      note.textContent='You must accept the privacy notice to continue.';
+      note.classList.add('err');
+      return;
+    }
+    note.textContent='Thank you. We have received your request and will contact you soon.';
+    note.classList.add('ok');
+    form.reset();
+  });
+</script>
+</body>
+</html>

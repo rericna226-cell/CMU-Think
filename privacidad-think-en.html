@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Notice | CMU Think</title>
+<meta name="description" content="Comprehensive Privacy Notice for CMU Think, in accordance with the Mexican Federal Law on the Protection of Personal Data Held by Private Parties (LFPDPPP).">
+
+<style>
+  :root{
+    --bg:#0a0c10;--bg-2:#0f131a;--panel:#12161e;
+    --ink:#eef2f7;--ink-soft:#aeb6c2;--ink-dim:#79828f;
+    --line:#1d2330;--accent:#2f9ae0;--accent-deep:#1f6fb0;--accent-ink:#0a0c10;--r:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;line-height:1.65;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{line-height:1.12;letter-spacing:-0.02em;font-weight:800}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:840px;margin:0 auto;padding:0 28px}
+  .accent{color:var(--accent)}
+
+  /* NAV */
+  header.nav{position:sticky;top:0;z-index:50;background:rgba(10,12,16,.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:64px;max-width:1180px;margin:0 auto;padding:0 28px}
+  .brand{font-weight:800;font-size:20px;letter-spacing:.04em}
+  .brand i{font-style:italic;color:var(--accent)}
+  .nav-links{display:flex;gap:30px;align-items:center}
+  .nav-links a{color:var(--ink-soft);font-size:14px;letter-spacing:.03em;transition:color .2s}
+  .nav-links a:hover{color:var(--ink)}
+  .nav-cta{border:1px solid var(--accent);color:var(--accent);padding:8px 16px;border-radius:999px;font-size:13px;font-weight:600;transition:background .2s,color .2s}
+  .nav-cta:hover{background:var(--accent);color:var(--accent-ink)}
+  .nav-actions{display:flex;align-items:center;gap:12px}
+  .burger{display:none;background:none;border:0;color:var(--ink);font-size:26px;cursor:pointer}
+  .lang-switcher{position:relative}
+  .lang{display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 12px;border-radius:999px;background:transparent;border:1px solid var(--line);color:var(--ink-soft);font-weight:800;font-size:12px;letter-spacing:.14em;cursor:pointer;transition:border-color .2s,color .2s,background .2s}
+  .lang:hover{border-color:var(--accent-deep);color:var(--ink)}
+  .lang-switcher.open .lang{border-color:var(--accent);color:var(--ink)}
+  .lang-caret{color:var(--ink-dim);font-size:14px;line-height:1}
+  .lang-menu{position:absolute;top:calc(100% + 10px);right:0;min-width:180px;background:rgba(15,19,26,.98);border:1px solid var(--line);border-radius:14px;padding:10px;display:grid;gap:6px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+  .lang-menu[hidden]{display:none}
+  .lang-menu a{padding:10px 12px;border-radius:12px;color:var(--ink-soft);border:1px solid transparent}
+  .lang-menu a:hover{background:rgba(47,154,224,.10);border-color:rgba(47,154,224,.25);color:var(--ink)}
+  .lang-menu a.active{background:rgba(47,154,224,.14);border-color:rgba(47,154,224,.35);color:var(--ink)}
+
+  /* DOC HEADER */
+  .doc-head{padding:80px 0 40px;border-bottom:1px solid var(--line);background:radial-gradient(700px 320px at 30% 0%,rgba(47,154,224,.12),transparent 70%)}
+  .eyebrow{display:inline-block;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);border:1px solid var(--line);padding:6px 12px;border-radius:999px;margin-bottom:22px}
+  .doc-head h1{font-size:clamp(30px,5vw,46px);margin-bottom:18px}
+  .doc-head .intro{color:var(--ink-soft);font-size:17px;max-width:680px}
+  .updated{margin-top:18px;font-size:14px;color:var(--ink-dim)}
+
+  /* DOC BODY */
+  .doc{padding:56px 0 80px}
+  .doc section{margin-bottom:38px}
+  .doc h2{font-size:21px;margin-bottom:14px;color:var(--ink);display:flex;gap:12px;align-items:baseline}
+  .doc h2 .num{color:var(--accent-deep);font-size:15px;font-weight:800;flex-shrink:0}
+  .doc h3{font-size:16px;color:var(--accent);margin:20px 0 10px}
+  .doc p{color:var(--ink-soft);font-size:16px;margin-bottom:14px}
+  .doc ul{list-style:none;display:grid;gap:10px;margin:6px 0 16px}
+  .doc li{position:relative;padding-left:22px;color:var(--ink-soft);font-size:16px}
+  .doc li::before{content:"";position:absolute;left:0;top:10px;width:7px;height:7px;border-radius:50%;background:var(--accent)}
+  .ph{color:var(--accent);background:rgba(47,154,224,.1);border:1px solid rgba(47,154,224,.25);border-radius:5px;padding:1px 6px;font-size:.92em}
+  .callout{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:var(--r);padding:24px 26px;margin-top:30px}
+  .callout h3{margin-top:0;font-size:17px}
+  .callout p{margin-bottom:0}
+  .team-note{background:rgba(224,154,47,.06);border:1px solid rgba(224,154,47,.25);border-radius:var(--r);padding:20px 24px;margin-top:34px;font-size:14px;color:var(--ink-soft)}
+  .team-note b{color:#e0a92f}
+
+  /* FOOTER */
+  footer{background:var(--bg-2);border-top:1px solid var(--line);padding:54px 0 34px}
+  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:36px;margin-bottom:36px;max-width:1180px;margin-left:auto;margin-right:auto;padding:0 28px}
+  .foot-brand{font-size:28px;font-weight:800;letter-spacing:.04em}
+  .foot-brand i{font-style:italic;color:var(--accent)}
+  footer h4{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:16px}
+  footer a,footer p{color:var(--ink-soft);font-size:14px;display:block;margin-bottom:8px}
+  footer a:hover{color:var(--accent)}
+  .foot-base{max-width:1180px;margin:0 auto;padding:24px 28px 0;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;color:var(--ink-dim);font-size:13px}
+  .foot-base a{color:var(--ink-dim);display:inline}
+
+  @media(max-width:880px){
+    .nav-links{position:fixed;inset:64px 0 auto 0;flex-direction:column;gap:0;background:var(--bg-2);border-bottom:1px solid var(--line);transform:translateY(-120%);transition:transform .3s;padding:10px 0}
+    .nav-links.open{transform:translateY(0)}
+    .nav-links a{padding:14px 28px;width:100%}
+    .nav-cta{margin:10px 28px}
+    .burger{display:block}
+    .foot-grid{grid-template-columns:1fr}
+  }
+  @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-in">
+    <a href="cmu-think-en.html" class="brand">CMU<i>Think</i></a>
+    <nav class="nav-links" id="menu">
+      <a href="cmu-think-en.html#problem">Technology</a>
+      <a href="cmu-think-en.html#levels">How it works</a>
+      <a href="cmu-think-en.html#resolution">Spatial resolution</a>
+      <a href="cmu-think-en.html#contact" class="nav-cta">Request assessment</a>
+    </nav>
+    <div class="nav-actions">
+      <div class="lang-switcher" id="langSwitcher">
+        <button class="lang" type="button" aria-label="Select language" aria-haspopup="true" aria-expanded="false" aria-controls="langMenu" id="langToggle">
+          <span>EN</span>
+          <span class="lang-caret" aria-hidden="true">⌄</span>
+        </button>
+        <div class="lang-menu" id="langMenu" hidden>
+          <a href="privacidad-think.html"><span>Español</span></a>
+          <a href="privacidad-think-en.html" class="active"><span>English</span></a>
+        </div>
+      </div>
+      <button class="burger" id="burger" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<section class="doc-head">
+  <div class="wrap">
+    <span class="eyebrow">Legal document</span>
+    <h1>Comprehensive Privacy Notice</h1>
+    <p class="intro">This Privacy Notice is issued in compliance with the Federal Law on the Protection of Personal Data Held by Private Parties in force in the United Mexican States.</p>
+    <p class="updated">Last updated: <span class="ph">[DATE DD/MM/YYYY]</span></p>
+  </div>
+</section>
+
+<div class="doc">
+  <div class="wrap">
+
+    <section>
+      <h2><span class="num">1.</span> Identity and address of the controller</h2>
+      <p>The controller responsible for the processing of your personal data is <span class="ph">[NAME OR LEGAL ENTITY OF THE CONTROLLER]</span>, with address at <span class="ph">[FULL TAX OR LEGAL ADDRESS]</span>, and contact email <span class="ph">[EMAIL@DOMAIN]</span> (hereinafter, the "Controller").</p>
+      <p>The Controller is responsible for collecting, using, and protecting the personal data you provide through this website, in accordance with the principles of lawfulness, consent, information, quality, purpose, loyalty, proportionality, and accountability established by law.</p>
+    </section>
+
+    <section>
+      <h2><span class="num">2.</span> Personal data we collect</h2>
+      <p>Through this website's contact form, we collect directly and by electronic means only the following personal data:</p>
+      <ul>
+        <li>Full name.</li>
+        <li>Company or organization.</li>
+        <li>Email address.</li>
+        <li>Contact phone number.</li>
+        <li>Information you freely decide to include in the message field, as well as the selected sector and type of interest (technical assessment, pilot, licensing, integration, or technical consultation).</li>
+      </ul>
+      <p>We do not collect sensitive personal data, nor financial or patrimonial data, through this website.</p>
+    </section>
+
+    <section>
+      <h2><span class="num">3.</span> Purposes of processing</h2>
+      <h3>Primary purposes (necessary)</h3>
+      <p>Your data is used for the following purposes that give rise to and are necessary for the relationship with you:</p>
+      <ul>
+        <li>To handle, follow up on, and respond to your request for information, technical assessment, pilot, licensing, or integration.</li>
+        <li>To contact you by electronic or telephone means in order to coordinate technical conversations, due diligence, or intellectual property transfer.</li>
+        <li>To identify and qualify the requester as a potential counterparty or partner.</li>
+        <li>To comply with obligations arising from the relationship that may be established.</li>
+      </ul>
+      <h3>Secondary purposes (optional)</h3>
+      <p>Additionally, and only if you do not object, we may use your data for <span class="ph">[DESCRIBE SECONDARY PURPOSE, E.G. SENDING INSTITUTIONAL INFORMATION]</span>. If you do not wish your data to be processed for these purposes, you may indicate this in accordance with section 7 of this notice. Your refusal will not be grounds for denying the requested services.</p>
+    </section>
+
+    <section>
+      <h2><span class="num">4.</span> Consent</h2>
+      <p>By providing your personal data through this website form and submitting your request, you acknowledge that you have read this Privacy Notice and grant your consent for the processing of your data in accordance with the purposes described herein. Consent may be revoked at any time in accordance with section 6.</p>
+    </section>
+
+    <section>
+      <h2><span class="num">5.</span> Transfers of personal data</h2>
+      <p>The Controller will not transfer your personal data to third parties without your consent, except in the cases expressly allowed by law (for example, when the transfer is provided for in a regulation, is necessary for the administration of justice, or takes place between companies within the same group under common policies).</p>
+      <p>If the Controller needs to transfer data to third parties other than those described above (for example <span class="ph">[LEGAL ADVISORS, EMAIL OR CRM PROVIDERS, IF APPLICABLE]</span>), you will be informed and, when required by law, your consent will be requested.</p>
+    </section>
+
+    <section>
+      <h2><span class="num">6.</span> Means to exercise ARCO rights and revoke consent</h2>
+      <p>You have the right to know what personal data we hold about you, what we use it for, and the conditions of its use (Access); to request its correction if it is inaccurate or incomplete (Rectification); to have it deleted from our records when you consider it is not being used in accordance with applicable regulations (Cancellation); as well as to object to the use of your data for specific purposes (Opposition). These are known as ARCO rights.</p>
+      <p>To exercise any of these rights, or to revoke your consent, send a request to <span class="ph">[EMAIL FOR ARCO REQUESTS]</span> indicating:</p>
+      <ul>
+        <li>Name of the data subject and means to communicate the response.</li>
+        <li>Document proving identity (or legal representation, if applicable).</li>
+        <li>Clear and precise description of the right you wish to exercise or the specific request.</li>
+        <li>Any element that helps locate the personal data.</li>
+      </ul>
+      <p>The Controller will respond to your request within the time limits established by applicable law.</p>
+    </section>
+
+    <section>
+      <h2><span class="num">7.</span> Means to limit the use or disclosure of your data</h2>
+      <p>You may request that the use or disclosure of your personal data be limited by sending your request to <span class="ph">[EMAIL FOR ARCO REQUESTS]</span>. Likewise, any communication you receive from us will include a mechanism allowing you to request that you stop receiving it.</p>
+    </section>
+
+    <section>
+      <h2><span class="num">8.</span> Use of cookies and tracking technologies</h2>
+      <p><span class="ph">[INDICATE WHETHER THE SITE USES COOKIES OR TRACKING TECHNOLOGIES. IF IT DOES NOT, LEAVE: "This site does not use cookies or tracking technologies that automatically collect personal data."]</span></p>
+    </section>
+
+    <section>
+      <h2><span class="num">9.</span> Changes to the Privacy Notice</h2>
+      <p>This Privacy Notice may be modified due to legal changes, internal practice updates, or new requirements. Any change will be published on this same page, indicating the date of the last update. We recommend reviewing it periodically.</p>
+    </section>
+
+    <section>
+      <h2><span class="num">10.</span> Data protection authority</h2>
+      <p>If you believe your right to personal data protection has been violated, you may contact the competent authority in Mexico regarding the protection of personal data held by private parties.</p>
+    </section>
+
+    <div class="callout">
+      <h3>Questions about this notice?</h3>
+      <p>For any inquiry related to the processing of your personal data, write to us at <span class="ph">[EMAIL@DOMAIN]</span>.</p>
+    </div>
+
+    <div class="team-note">
+      <b>Internal note (remove before publishing):</b> fields in brackets are mandatory and must be completed with real data. This document is a structured legal basis and should be reviewed by counsel before publication, especially given the confidential and NDA-governed nature of the project.
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="foot-grid">
+    <div>
+      <div class="foot-brand">CMU<i>Think</i></div>
+      <p style="margin-top:14px;max-width:320px">Noise reduction and neural activity reconstruction for BCI research.</p>
+    </div>
+    <div>
+      <h4>Navigation</h4>
+      <a href="cmu-think-en.html#problem">Technology</a>
+      <a href="cmu-think-en.html#levels">How it works</a>
+      <a href="cmu-think-en.html#resolution">Spatial resolution</a>
+      <a href="cmu-think-en.html#integration">Integration</a>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <p>+52 222 964 8206</p>
+      <p>Puebla, Mexico</p>
+      <a href="cmu-think-en.html#contact">Request assessment</a>
+      <a href="privacidad-think-en.html">Privacy notice</a>
+    </div>
+  </div>
+  <div class="foot-base">
+    <span>© 2026 <span class="ph">[LEGAL ENTITY]</span>. Limited distribution.</span>
+    <span><a href="privacidad-think-en.html">Privacy notice</a> · Technical document available upon request and NDA</span>
+  </div>
+</footer>
+
+<script>
+  const burger=document.getElementById('burger');
+  const menu=document.getElementById('menu');
+  burger.addEventListener('click',()=>menu.classList.toggle('open'));
+  menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>menu.classList.remove('open')));
+
+  (()=>{
+    function initLang(switcherId,toggleId,menuId){
+      const switcher=document.getElementById(switcherId);
+      const toggle=document.getElementById(toggleId);
+      const langMenu=document.getElementById(menuId);
+      if(!switcher||!toggle||!langMenu) return;
+
+      function close(){
+        langMenu.hidden=true;
+        switcher.classList.remove('open');
+        toggle.setAttribute('aria-expanded','false');
+      }
+
+      function open(){
+        langMenu.hidden=false;
+        switcher.classList.add('open');
+        toggle.setAttribute('aria-expanded','true');
+      }
+
+      toggle.addEventListener('click',(event)=>{
+        event.stopPropagation();
+        if(langMenu.hidden) open();
+        else close();
+      });
+
+      document.addEventListener('click',(event)=>{
+        if(!switcher.contains(event.target)) close();
+      });
+
+      document.addEventListener('keydown',(event)=>{
+        if(event.key==='Escape') close();
+      });
+    }
+
+    initLang('langSwitcher','langToggle','langMenu');
+  })();
+</script>
+</body>
+</html>
