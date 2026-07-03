@@ -128,7 +128,8 @@
   .ftext ul{list-style:none;display:grid;gap:10px;margin-top:10px}
   .ftext li{position:relative;padding-left:22px;color:var(--ink-soft);font-size:15px}
   .ftext li::before{content:"";position:absolute;left:0;top:9px;width:8px;height:8px;border-radius:50%;background:var(--accent)}
-  .fart{aspect-ratio:5/4;border-radius:var(--r);border:1px dashed var(--line);background:linear-gradient(160deg,var(--panel),var(--bg-2));display:flex;align-items:center;justify-content:center;color:var(--ink-dim);font-size:13px;text-align:center;padding:24px}
+  .fart{aspect-ratio:5/4;border-radius:var(--r);border:1px solid var(--line);background:#05070b;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .fart img{width:100%;height:100%;object-fit:contain;display:block}
 
   /* INGESTA */
   .modes{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-bottom:28px}
@@ -310,7 +311,7 @@
     <p class="sec-eyebrow reveal">La diferencia</p>
     <h2 class="sec-title reveal">De voltaje mezclado a fuente localizada</h2>
 
-    <div class="feature single" style="margin-top:40px">
+    <div class="feature" style="margin-top:40px">
       <div class="ftext reveal">
         <h3>Resolución espacial real</h3>
         <p>Los equipos de medición etiquetan sus canales con códigos propios que no tienen significado anatómico. CMU Think los traduce al estándar internacional, carga el montaje espacial y aplica un filtro que actúa como lente: enfatiza la fuente local y separa contribuciones lejanas.</p>
@@ -320,9 +321,12 @@
           <li>Restaura la correspondencia entre electrodo y región de origen.</li>
         </ul>
       </div>
+      <div class="fart reveal">
+        <img src="9.gif" alt="Visual de separación de fuentes y resolución espacial" loading="lazy">
+      </div>
     </div>
 
-    <div class="feature single rev">
+    <div class="feature rev">
       <div class="ftext reveal">
         <h3>Cinematografía neural 4D</h3>
         <p>Una imagen estática pierde la dinámica de la actividad. CMU Think genera una secuencia de fotogramas que muestra cómo evoluciona la actividad a lo largo del tiempo, fotograma a fotograma.</p>
@@ -331,6 +335,9 @@
           <li>Cada elemento queda etiquetado con su instante e intensidad.</li>
           <li>Base para análisis de dinámica y patrones estructurales.</li>
         </ul>
+      </div>
+      <div class="fart reveal">
+        <img src="10.gif" alt="Visual de activación 4D en secuencia temporal" loading="lazy">
       </div>
     </div>
   </div>

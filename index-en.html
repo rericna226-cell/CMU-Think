@@ -109,7 +109,8 @@
   .ftext ul{list-style:none;display:grid;gap:10px;margin-top:10px}
   .ftext li{position:relative;padding-left:22px;color:var(--ink-soft);font-size:15px}
   .ftext li::before{content:"";position:absolute;left:0;top:9px;width:8px;height:8px;border-radius:50%;background:var(--accent)}
-  .fart{aspect-ratio:5/4;border-radius:var(--r);border:1px dashed var(--line);background:linear-gradient(160deg,var(--panel),var(--bg-2));display:flex;align-items:center;justify-content:center;color:var(--ink-dim);font-size:13px;text-align:center;padding:24px}
+  .fart{aspect-ratio:5/4;border-radius:var(--r);border:1px solid var(--line);background:#05070b;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .fart img{width:100%;height:100%;object-fit:contain;display:block}
 
   /* INGESTION */
   .modes{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-bottom:28px}
@@ -286,7 +287,7 @@
     <p class="sec-eyebrow reveal">The difference</p>
     <h2 class="sec-title reveal">From mixed voltage to localized source</h2>
 
-    <div class="feature single" style="margin-top:40px">
+    <div class="feature" style="margin-top:40px">
       <div class="ftext reveal">
         <h3>True spatial resolution</h3>
         <p>Measurement systems label their channels with proprietary codes that carry no anatomical meaning. CMU Think translates them into the international standard, loads the spatial montage, and applies a filter that acts as a lens: it emphasizes the local source and separates distant contributions.</p>
@@ -296,9 +297,12 @@
           <li>Restores the correspondence between electrode and source region.</li>
         </ul>
       </div>
+      <div class="fart reveal">
+        <img src="9.gif" alt="Visualization of source separation and spatial resolution" loading="lazy">
+      </div>
     </div>
 
-    <div class="feature single rev">
+    <div class="feature rev">
       <div class="ftext reveal">
         <h3>4D neural cinematography</h3>
         <p>A static image loses the dynamics of activity. CMU Think generates a sequence of frames showing how activity evolves over time, frame by frame.</p>
@@ -307,6 +311,9 @@
           <li>Each element is tagged with its timing and intensity.</li>
           <li>Foundation for dynamic analysis and structural pattern detection.</li>
         </ul>
+      </div>
+      <div class="fart reveal">
+        <img src="10.gif" alt="Visualization of 4D activation across a temporal sequence" loading="lazy">
       </div>
     </div>
   </div>
