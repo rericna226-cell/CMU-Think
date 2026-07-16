@@ -135,19 +135,37 @@
   .final{padding:110px 0;text-align:center;border-top:1px solid var(--line);background:radial-gradient(700px 300px at 50% 0%,rgba(47,154,224,.12),transparent 70%)}
   .final h2{font-size:clamp(30px,5vw,52px);margin-bottom:18px}
   .final p{color:var(--ink-soft);max-width:540px;margin:0 auto 34px;font-size:18px}
-  .cform{max-width:640px;margin:44px auto 0;text-align:left}
-  .frow{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-  .field{margin-bottom:18px;display:flex;flex-direction:column}
-  .field label{font-size:13px;color:var(--ink-soft);margin-bottom:7px;letter-spacing:.02em}
-  .field input,.field select,.field textarea{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;color:var(--ink);font-size:15px;font-family:inherit;transition:border-color .2s;width:100%}
-  .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--accent)}
-  .field textarea{resize:vertical}
-  .consent{display:flex;gap:12px;align-items:flex-start;text-align:left;margin:6px 0 4px;font-size:13px;color:var(--ink-soft)}
-  .consent input{margin-top:4px;flex-shrink:0;accent-color:var(--accent)}
-  .consent a{color:var(--accent);text-decoration:underline}
-  .form-note{font-size:14px;margin-top:14px;min-height:20px}
-  .form-note.ok{color:var(--accent)}
-  .form-note.err{color:#e06a6a}
+  .contact-card{
+    max-width:680px;margin:44px auto 0;padding:32px;text-align:left;
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);
+  }
+  .contact-label{
+    max-width:none!important;margin:0 0 16px!important;font-size:12px!important;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--accent-deep);font-weight:700;
+  }
+  .contact-list{margin:0 0 26px;padding-left:20px;color:var(--ink-soft)}
+  .contact-list li{margin-bottom:10px}
+  .contact-email-label{
+    max-width:none!important;margin:0 0 8px!important;color:var(--ink-dim)!important;
+    font-size:13px!important;letter-spacing:.04em;text-align:left!important;
+  }
+  .contact-email{
+    display:block;margin:0 0 26px;color:var(--accent);
+    font-size:18px;font-weight:700;text-decoration:none;
+  }
+  .contact-email:hover{color:var(--accent-deep)}
+  .contact-button{
+    display:inline-flex;align-items:center;justify-content:center;gap:10px;
+    padding:14px 22px;border-radius:999px;border:1px solid transparent;
+    background:var(--accent);color:#061018;text-decoration:none;font-weight:800;
+    transition:transform .15s,background .2s,border-color .2s;
+  }
+  .contact-button:hover{transform:translateY(-2px);background:#52aeea}
+  .contact-note{
+    max-width:none!important;margin:18px 0 0!important;
+    color:var(--ink-dim)!important;font-size:14px!important;line-height:1.6;
+  }
+  .contact-note a{color:var(--accent);text-decoration:underline}
 
   /* FOOTER */
   footer{background:var(--bg-2);border-top:1px solid var(--line);padding:60px 0 36px}
@@ -168,9 +186,11 @@
     .nav-links a{padding:14px 28px;width:100%}
     .nav-cta{margin:10px 28px}
     .burger{display:block}
-    .problem,.levels,.feature,.feature.rev .ftext,.modes,.flow,.foot-grid,.frow{grid-template-columns:1fr}
+    .problem,.levels,.feature,.feature.rev .ftext,.modes,.flow,.foot-grid{grid-template-columns:1fr}
     .feature.rev .ftext{order:0}
     .flow-step + .flow-step{border-left:0;border-top:1px solid var(--line)}
+    .contact-card{padding:24px}
+    .contact-button{width:100%}
   }
   @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
   .reveal{opacity:0;transform:translateY(24px);transition:opacity .6s,transform .6s}
@@ -391,53 +411,32 @@
 <section class="final" id="contact">
   <div class="wrap">
     <h2>Bring CMU Think into your research</h2>
-    <p>Tell us about your use case and we will schedule a technical assessment.</p>
+    <p>Briefly share your use case with our team. We will review the information and typically respond within 24 to 48 business hours.</p>
 
-    <form class="cform reveal" id="cform" novalidate>
-      <div class="frow">
-        <div class="field">
-          <label for="name">Name</label>
-          <input id="name" name="name" type="text" autocomplete="name" required>
-        </div>
-        <div class="field">
-          <label for="organization">Company or organization</label>
-          <input id="organization" name="organization" type="text" autocomplete="organization">
-        </div>
-      </div>
-      <div class="frow">
-        <div class="field">
-          <label for="email">Email</label>
-          <input id="email" name="email" type="email" autocomplete="email" required>
-        </div>
-        <div class="field">
-          <label for="phone">Phone</label>
-          <input id="phone" name="phone" type="tel" autocomplete="tel">
-        </div>
-      </div>
-      <div class="field">
-        <label for="interest">Type of interest</label>
-        <select id="interest" name="interest">
-          <option value="">Select an option</option>
-          <option>Technical assessment</option>
-          <option>Pilot</option>
-          <option>Licensing</option>
-          <option>Integration</option>
-          <option>Technical consultation</option>
-        </select>
-      </div>
-      <div class="field">
-        <label for="message">Describe your use case</label>
-        <textarea id="message" name="message" rows="4" required></textarea>
-      </div>
+    <div class="contact-card reveal">
+      <p class="contact-label">Include in your message</p>
+      <ul class="contact-list">
+        <li>Name</li>
+        <li>Company or organization</li>
+        <li>Type of interest</li>
+        <li>Use case description</li>
+        <li>Diagnostic objective</li>
+        <li>Contact phone (optional)</li>
+        <li>Email</li>
+      </ul>
 
-      <label class="consent">
-        <input type="checkbox" id="consent" name="consent" required>
-        <span>I have read and accept the <a href="privacidad-think-en.html" target="_blank" rel="noopener">privacy notice</a> and authorize the processing of my data in accordance with the LFPDPPP.</span>
-      </label>
+      <p class="contact-email-label">You can also write to us directly at</p>
+      <a class="contact-email" href="mailto:info@cmuthink.com">info@cmuthink.com</a>
 
-      <button type="submit" class="btn btn-primary" style="margin-top:8px">Request technical assessment</button>
-      <p class="form-note" id="form-note" role="status" aria-live="polite"></p>
-    </form>
+      <a
+        class="contact-button"
+        href="mailto:info@cmuthink.com?subject=Technical%20Diagnostic%20Request%20-%20CMU%20Think&body=Name%3A%0D%0ACompany%20or%20organization%3A%0D%0AType%20of%20interest%3A%0D%0APhone%3A%0D%0AEmail%3A%0D%0A%0D%0AUse%20case%20description%3A%0D%0A%0D%0ADiagnostic%20objective%3A%0D%0A"
+      >
+        Request technical assessment
+      </a>
+
+      <p class="contact-note">By contacting us via email, you agree that we may process the personal data you provide in accordance with our <a href="privacidad-think-en.html">Privacy Notice</a>.</p>
+    </div>
   </div>
 </section>
 
@@ -518,25 +517,6 @@
     initLang('langSwitcher','langToggle','langMenu');
   })();
 
-  const form=document.getElementById('cform');
-  const note=document.getElementById('form-note');
-  form.addEventListener('submit',(ev)=>{
-    ev.preventDefault();
-    note.className='form-note';
-    if(!form.checkValidity()){
-      note.textContent='Please review the required fields.';
-      note.classList.add('err');
-      return;
-    }
-    if(!document.getElementById('consent').checked){
-      note.textContent='You must accept the privacy notice to continue.';
-      note.classList.add('err');
-      return;
-    }
-    note.textContent='Thank you. We have received your request and will contact you soon.';
-    note.classList.add('ok');
-    form.reset();
-  });
 </script>
 </body>
 </html>
